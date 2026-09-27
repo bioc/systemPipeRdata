@@ -1,0 +1,25 @@
+citHeader(
+    "To cite systemPipeRdata in publications, please cite the",
+    "systemPipeR publication:"
+)
+
+bibentry(
+    bibtype = "Article",
+    title = paste(
+        "systemPipeR: a multipurpose workflow management system",
+        "for reproducible data analysis"
+    ),
+    author = c(
+        person("Le", "Zhang"),
+        person("Daniela", "Cassol"),
+        person("Brendan", "Gongol"),
+        person("Thomas", "Girke")
+    ),
+    journal = "NAR Genomics and Bioinformatics",
+    year = "2026",
+    volume = "8",
+    number = "2",
+    pages = "lqag032",
+    doi = "10.1093/nargab/lqag032",
+    url = "https://doi.org/10.1093/nargab/lqag032"
+)

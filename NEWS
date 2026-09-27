@@ -1,7 +1,7 @@
 CHANGES IN THIS VERSION
 -----------------------
 
-CHANGES IN VERSION 2.15.7
+CHANGES IN VERSION 2.17.1
 
     o Large example data resources, including FASTQ files, annotation resources, and precomputed BAM files, are no longer distributed directly with the systemPipeRdata package. These resources are now hosted on Zenodo and downloaded and cached locally using BiocFileCache.
     o Added getSPRdata() for retrieving the external example data resources. FASTQ and annotation resources are retrieved by default, while precomputed BAM files can optionally be retrieved with getSPRdata(bam = TRUE).
