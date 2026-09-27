@@ -10,5 +10,5 @@ importFrom("utils", "download.file", "install.packages", "relist")
 ## Functions
 export(
     "pathList", "genWorkenvir", "availableWF", "getSubsetReads",
-    "genWorkenvir_gh", "getParam_gh", "getData_gh"
+    "genWorkenvir_gh", "getParam_gh", "getData_gh", "getSPRdata"
 )

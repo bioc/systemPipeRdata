@@ -5,9 +5,6 @@ pathList <- function() {
   list(
     targets=system.file("extdata/param", "targets.txt", package="systemPipeRdata", mustWork=TRUE),
     targetsPE=system.file("extdata/param", "targetsPE.txt", package="systemPipeRdata", mustWork=TRUE),
-    annotationdir=system.file("extdata/annotation", "", package="systemPipeRdata", mustWork=TRUE),
-    fastqdir=system.file("extdata/fastq", "", package="systemPipeRdata", mustWork=TRUE),
-    bamdir=system.file("extdata/bam", "", package="systemPipeRdata", mustWork=TRUE),
     paramdir=system.file("extdata/param", "", package="systemPipeRdata", mustWork=TRUE)
   )
 }
@@ -60,12 +57,16 @@ genWorkenvir <- function(
     unlink(mydirname2temp, recursive=TRUE) # removes temp dir
     ## Moving data and param common files
     if(workflow != "new") {
-      file.copy(normalizePath(list.files(pathList()$fastqdir, "*", full.names=TRUE)), paste0(mydirname2, "/data"), overwrite=TRUE, recursive=TRUE)
-      file.copy(normalizePath(list.files(pathList()$annotationdir, "*", full.names=TRUE)), paste0(mydirname2, "/data"), overwrite=TRUE, recursive=TRUE)
+      sprdata <- getSPRdata(bam=bam)
+      file.copy(normalizePath(list.files(sprdata$fastqdir, "*", full.names=TRUE)), paste0(mydirname2, "/data"), overwrite=TRUE, recursive=TRUE)
+      file.copy(normalizePath(list.files(sprdata$annotationdir, "*", full.names=TRUE)), paste0(mydirname2, "/data"), overwrite=TRUE, recursive=TRUE)
     }
     file.copy(c(normalizePath(paste0(pathList()$paramdir, "/targetsPE.txt")), normalizePath(paste0(pathList()$paramdir, "/targets.txt"))), paste0(mydirname2, "/"))
     file.copy(c(paste0(pathList()$paramdir, "bibtex.bib")), paste0(mydirname2, "/bibtex.bib"), overwrite=TRUE)
-    if(bam==TRUE) file.copy(normalizePath(list.files(pathList()$bamdir, "*", full.names=TRUE)), paste0(mydirname2, "/results"), overwrite=TRUE, recursive=TRUE)
+    if(bam==TRUE) {
+      if(!exists("sprdata", inherits=FALSE)) sprdata <- getSPRdata(bam=TRUE)
+      file.copy(normalizePath(list.files(sprdata$bamdir, "*", full.names=TRUE)), paste0(mydirname2, "/results"), overwrite=TRUE, recursive=TRUE)
+    }
     file.copy(pathList()$paramdir, paste0(mydirname2, "/"), recursive=TRUE)
     file.copy(c(file.path(pathList()$paramdir, "batchtools.slurm.tmpl"), file.path(pathList()$paramdir, ".batchtools.conf.R")), paste0(mydirname2, "/"))
   }
@@ -92,8 +93,9 @@ genWorkdata <- function(path=getwd(), data=TRUE, param=TRUE){
   })
   if(data==TRUE){
     if (dir.exists(data.path) == FALSE) (dir.create(data.path))
-    file.copy(normalizePath(list.files(pathList()$fastqdir, "*", full.names=TRUE)), data.path, overwrite=TRUE, recursive=TRUE)
-    file.copy(normalizePath(list.files(pathList()$annotationdir, "*", full.names=TRUE)), data.path, overwrite=TRUE, recursive=TRUE)
+    sprdata <- getSPRdata()
+    file.copy(normalizePath(list.files(sprdata$fastqdir, "*", full.names=TRUE)), data.path, overwrite=TRUE, recursive=TRUE)
+    file.copy(normalizePath(list.files(sprdata$annotationdir, "*", full.names=TRUE)), data.path, overwrite=TRUE, recursive=TRUE)
     print("The 'demo data'was successfully copied to your project.")
   }
   if (param==TRUE){
